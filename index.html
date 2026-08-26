@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ZishQR-ltd.</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f5f5f5;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        #message {
+            color: #555;
+            word-break: break-word;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h1>QR Code</h1>
+    <p id="message">Checking QR code...</p>
+</div>
+
+
+<script>
+
+/* =========================================================
+   QR CODE REDIRECT SETTINGS
+
+   Put your QR codes and destinations here.
+
+   FORMAT:
+
+   "Q0001": "https://example.com",
+   "Q0002": "https://youtube.com",
+   "Q0003": "Hello World",
+   "Q0004": "123456789"
+
+   ========================================================= */
+
+const qrCodes = {
+
+    "Q001": "https://google.com",
+
+    "Q002": "https://youtube.com",
+
+    "Q003": "https://www.example.com",
+
+    "Q004": "Hello World",
+
+    "Q005": "123456789",
+
+    "Q006": "https://example.com/page1",
+
+    "Q007": "https://example.com/page2",
+
+    "Q008": "https://example.com/page2",
+
+    "Q009": "https://example.com/page2",
+
+    "Q010": "https://example.com/page2",
+
+    "Q011": "https://example.com/page2",
+
+    "Q012": "https://example.com/page2",
+
+    "Q013": "https://example.com/page2",
+
+    "Q014": "https://example.com/page2",
+
+    "Q015": "https://example.com/page2",
+
+    "Q015": "https://example.com/page2",
+
+    "Q016": "https://example.com/page2",
+
+    "Q017": "https://example.com/page2",
+
+};
+
+
+/* =========================================================
+   GET QR CODE FROM URL
+   ========================================================= */
+
+const params = new URLSearchParams(window.location.search);
+
+const qrCode = params.get("q");
+
+
+/* =========================================================
+   CHECK QR CODE
+   ========================================================= */
+
+if (!qrCode) {
+
+    document.getElementById("message").innerHTML =
+        "No QR code was provided.";
+
+} else if (!qrCodes[qrCode]) {
+
+    document.getElementById("message").innerHTML =
+        "QR code <b>" + qrCode + "</b> is not registered.";
+
+} else {
+
+    const destination = qrCodes[qrCode];
+
+
+    /* =====================================================
+       CHECK WHETHER DESTINATION IS A URL
+       ===================================================== */
+
+    if (
+        destination.startsWith("http://") ||
+        destination.startsWith("https://")
+    ) {
+
+        document.getElementById("message").innerHTML =
+            "Redirecting...";
+
+        /*
+         * Redirect to URL
+         */
+
+        window.location.replace(destination);
+
+    } else {
+
+        /*
+         * If it is NOT a URL,
+         * display it as text/number.
+         */
+
+        document.getElementById("message").innerHTML =
+            "<strong>" +
+            escapeHtml(destination) +
+            "</strong>";
+
+    }
+
+}
+
+
+/* =========================================================
+   SECURITY FUNCTION
+   ========================================================= */
+
+function escapeHtml(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+</script>
+
+</body>
+</html>
+
+<!-- Printed QR
+    ↓
+myqrcode.netlify.app/?q=Q001
+    ↓
+JavaScript
+    ↓
+Q001 → new URL -->
